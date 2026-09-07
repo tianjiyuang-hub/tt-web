@@ -5,502 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ti4nj1.xyz</title>
     <style>
-        :root {
-            --bg:#0f172a;
-            --card:#1e293b;
-            --text:#e2e8f0;
-            --subtext:#94a3b8;
-            --border:#334155;
-            --btn:#2563eb;
-        }
-        .light {
-            --bg:#f8fafc;
-            --card:#ffffff;
-            --text:#1e293b;
-            --subtext:#475569;
-            --border:#cbd5e1;
-            --btn:#2563eb;
-        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            touch‑action: manipulation; /* 关键：禁止双击缩放，保留滚动 */
         }
         body {
             min-height: 100vh;
-            background: var(--bg);
-            color: var(--text);
+            background: #0f172a;
+            color: #e2e8f0;
             font-family: system-ui, -apple-system, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding:16px 12px;
-            transition: background 0.35s, color 0.35s;
-        }
-        .header-bar{
-            width:100%;
-            max-width:560px;
-            display:flex;
-            justify-content: space-between;
-            align-items:center;
-            margin-bottom:14px;
-        }
-        #themeBtn{
-            padding:8px 12px;
-            border-radius:8px;
-            border:1px solid var(--border);
-            background:var(--card);
-            color:var(--text);
-            cursor:pointer;
-            font-size:14px;
-        }
-        /*导航目录 */
-        .nav{
-            display:flex;
-            gap:6px;
-            margin-bottom:18px;
-            flex-wrap:wrap;
-            justify-content:center;
-        }
-        .nav button{
-            padding:8px 12px;
-            border-radius:8px;
-            border:1px solid var(--border);
-            background:var(--card);
-            color:var(--text);
-            cursor:pointer;
-            font-size:14px;
-        }
-        .nav button.active{
-            background:var(--btn);
-            color:white;
-            border-color:var(--btn);
+            justify-content: center;
+            padding: 20px;
         }
         .card {
             text-align: center;
-            max-width: 560px;
+            max-width: 480px;
             width: 100%;
-            padding: 24px 16px;
-            background: var(--card);
+            padding: 40px 30px;
+            background: #1e293b;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border: 1px solid #334155;
         }
         h1 {
-            font-size: 1.6rem;
-            margin-bottom:8px;
+            font-size: 2.2rem;
+            margin-bottom:12px;
+            color:#ffffff;
         }
         .domain {
             color:#60a5fa;
-            font-size:0.95rem;
-            margin-bottom:12px;
+            font-size:1.1rem;
+            margin-bottom:28px;
         }
-        .desc{
-            color:var(--subtext);
-            margin-bottom:14px;
-            font-size:0.92rem;
+        p {
+            color:#94a3b8;
+            line-height:1.7;
+            margin-bottom:32px;
         }
-        canvas{
-            max-width:100%;
-            height:auto;
-            border:2px solid var(--border);
-            border-radius:8px;
-            background:#111;
-        }
-        .light canvas{
-            background:#f1f5f9;
-        }
-        .game-info{
-            margin:10px 0;
-            font-size:15px;
-            color:var(--subtext);
-        }
-        .ctrl button{
-            padding:8px 14px;
-            margin:3px;
-            border-radius:6px;
-            border:none;
-            background:var(--btn);
+        .links a {
+            display: inline-block;
+            text-decoration: none;
             color:white;
-            cursor:pointer;
+            background:#2563eb;
+            padding:12px 26px;
+            border-radius: 8px;
+            margin:6px;
+            transition: 0.25s ease;
         }
-        /*虚拟方向按键*/
-        .dpad{
-            margin-top:16px;
-            display:inline-grid;
-            grid-template-areas:
-            ". up ."
-            "left down right";
-            gap:8px;
+        .links a:hover {
+            background:#1d4ed8;
+            transform: translateY(-2px);
         }
-        .dpad button{
-            width:52px;
-            height:52px;
-            font-size:20px;
-            border-radius:10px;
-            border:1px solid var(--border);
-            background:var(--btn);
-            color:#fff;
-        }
-        .dpad .btn-up{grid-area:up;}
-        .dpad .btn-left{grid-area:left;}
-        .dpad .btn-down{grid-area:down;}
-        .dpad .btn-right{grid-area:right;}
-
         footer {
-            margin-top:20px;
-            font-size:0.75rem;
-            color:var(--subtext);
-        }
-        .page{
-            display:none;
-        }
-        .page.show{
-            display:block;
+            margin-top:30px;
+            font-size:0.85rem;
+            color:#64748b;
         }
     </style>
 </head>
 <body>
-    <div class="header-bar">
-        <div></div>
-        <button id="themeBtn">☀️ 白天模式</button>
-    </div>
-
     <div class="card">
-        <h1>ti4nj1.xyz</h1>
-        <div class="domain">小游戏合集</div>
-
-        <div class="nav">
-            <button class="nav-btn active" data-page="home">🏠 主页</button>
-            <button class="nav-btn" data-page="snakePage">🐍 贪吃蛇</button>
-            <button class="nav-btn" data-page="tetrisPage">🧱 俄罗斯方块</button>
-        </div>
-
-        <div id="home" class="page show">
-            <p class="desc">欢迎来到我的网站，上方目录选择游戏。<br>电脑：键盘方向键；手机：屏幕虚拟按键。</p>
-        </div>
-
-        <div id="snakePage" class="page">
-            <p class="desc">贪吃蛇游戏</p>
-            <canvas id="snakeCanvas" width="360" height="360"></canvas>
-            <div class="game-info">分数：<span id="snakeScore">0</span></div>
-            <div class="ctrl">
-                <button id="snakeStart">开始游戏</button>
-                <button id="snakeReset">重置</button>
-            </div>
-            <div class="dpad">
-                <button class="btn-up">↑</button>
-                <button class="btn-left">←</button>
-                <button class="btn-down">↓</button>
-                <button class="btn-right">→</button>
-            </div>
-        </div>
-
-        <div id="tetrisPage" class="page">
-            <p class="desc">俄罗斯方块：↑旋转，↓加速</p>
-            <canvas id="tetrisCanvas" width="240" height="400"></canvas>
-            <div class="game-info">分数：<span id="tetrisScore">0</span></div>
-            <div class="ctrl">
-                <button id="tetrisStart">开始游戏</button>
-                <button id="tetrisReset">重置</button>
-            </div>
-            <div class="dpad">
-                <button class="btn-up">↑</button>
-                <button class="btn-left">←</button>
-                <button class="btn-down">↓</button>
-                <button class="btn-right">→</button>
-            </div>
+        <h1>欢迎来到我的站点</h1>
+        <div class="domain">ti4nj1.xyz</div>
+        <p>这是使用 Cloudflare Pages + GitHub 搭建的个人网站。</p>
+        <div class="links">
+            <a href="#">示例链接</a>
         </div>
     </div>
     <footer>Powered by Cloudflare Pages</footer>
-
-<script>
-//昼夜切换
-const body=document.body;
-const themeBtn=document.getElementById('themeBtn');
-let isLight=false;
-themeBtn.onclick=()=>{
-    isLight=!isLight;
-    body.classList.toggle('light',isLight);
-    themeBtn.innerText= isLight?"🌙 夜晚模式":"☀️ 白天模式";
-};
-
-//导航切换
-const navBtns=document.querySelectorAll('.nav-btn');
-const pages=document.querySelectorAll('.page');
-navBtns.forEach(btn=>{
-    btn.onclick=()=>{
-        const target=btn.dataset.page;
-        navBtns.forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        pages.forEach(p=>p.classList.remove('show'));
-        document.getElementById(target).classList.add('show');
-        stopAllGame();
-    }
-});
-
-//虚拟按键改用 touchstart，防止双击放大
-const btnUp=document.querySelectorAll('.btn-up');
-const btnDown=document.querySelectorAll('.btn-down');
-const btnLeft=document.querySelectorAll('.btn-left');
-const btnRight=document.querySelectorAll('.btn-right');
-
-function fireKey(keyName){
-    const evt=new KeyboardEvent('keydown',{key:keyName});
-    document.dispatchEvent(evt);
-}
-
-btnUp.forEach(b=>{
-    b.addEventListener('touchstart',e=>{
-        e.preventDefault();
-        fireKey("ArrowUp");
-    },{passive:false});
-});
-btnDown.forEach(b=>{
-    b.addEventListener('touchstart',e=>{
-        e.preventDefault();
-        fireKey("ArrowDown");
-    },{passive:false});
-});
-btnLeft.forEach(b=>{
-    b.addEventListener('touchstart',e=>{
-        e.preventDefault();
-        fireKey("ArrowLeft");
-    },{passive:false});
-});
-btnRight.forEach(b=>{
-    b.addEventListener('touchstart',e=>{
-        e.preventDefault();
-        fireKey("ArrowRight");
-    },{passive:false});
-});
-
-// ==========贪吃蛇 ==========
-const snakeCanvas=document.getElementById('snakeCanvas');
-const snakeCtx=snakeCanvas.getContext('2d');
-const snakeScoreEl=document.getElementById('snakeScore');
-const snakeStartBtn=document.getElementById('snakeStart');
-const snakeResetBtn=document.getElementById('snakeReset');
-const box=18;
-let snakeGameTimer=null;
-let snake=[{x:10*box,y:10*box}];
-let snakeFood={x:Math.floor(Math.random()*20)*box,y:Math.floor(Math.random()*20)*box};
-let snakeDir="RIGHT";
-let snakeNextDir="RIGHT";
-let snakeScore=0;
-
-function snakeDraw(){
-    snakeCtx.fillStyle= body.classList.contains('light')?"#f1f5f9":"#111111";
-    snakeCtx.fillRect(0,0,snakeCanvas.width,snakeCanvas.height);
-    snakeCtx.fillStyle="#22c55e";
-    for(let i=0;i<snake.length;i++){
-        snakeCtx.fillRect(snake[i].x,snake[i].y,box-1,box-1);
-    }
-    snakeCtx.fillStyle="#ef4444";
-    snakeCtx.fillRect(snakeFood.x,snakeFood.y,box-1,box-1);
-}
-
-function snakeUpdate(){
-    snakeDir=snakeNextDir;
-    let head={...snake[0]};
-    if(snakeDir==="LEFT") head.x-=box;
-    if(snakeDir==="RIGHT") head.x+=box;
-    if(snakeDir==="UP") head.y-=box;
-    if(snakeDir==="DOWN") head.y+=box;
-
-    if(head.x<0||head.x>=snakeCanvas.width||head.y<0||head.y>=snakeCanvas.height){
-        clearInterval(snakeGameTimer);
-        alert("贪吃蛇游戏结束！分数："+snakeScore);
-        return;
-    }
-    for(let i=1;i<snake.length;i++){
-        if(head.x===snake[i].x&&head.y===snake[i].y){
-            clearInterval(snakeGameTimer);
-            alert("贪吃蛇游戏结束！分数："+snakeScore);
-            return;
-        }
-    }
-    snake.unshift(head);
-    if(head.x===snakeFood.x&&head.y===snakeFood.y){
-        snakeScore+=10;
-        snakeScoreEl.innerText=snakeScore;
-        snakeFood={x:Math.floor(Math.random()*20)*box,y:Math.floor(Math.random()*20)*box};
-    }else{
-        snake.pop();
-    }
-    snakeDraw();
-}
-
-function snakeResetGame(){
-    clearInterval(snakeGameTimer);
-    snakeGameTimer=null;
-    snake=[{x:10*box,y:10*box}];
-    snakeDir="RIGHT";
-    snakeNextDir="RIGHT";
-    snakeScore=0;
-    snakeScoreEl.innerText=0;
-    snakeFood={x:Math.floor(Math.random()*20)*box,y:Math.floor(Math.random()*20)*box};
-    snakeDraw();
-}
-snakeStartBtn.onclick=()=>{
-    if(!snakeGameTimer) snakeGameTimer=setInterval(snakeUpdate,140);
-};
-snakeResetBtn.onclick=snakeResetGame;
-snakeDraw();
-
-// ==========俄罗斯方块 ==========
-const tetrisCanvas=document.getElementById('tetrisCanvas');
-const tCtx=tetrisCanvas.getContext('2d');
-const tetrisScoreEl=document.getElementById('tetrisScore');
-const tetrisStartBtn=document.getElementById('tetrisStart');
-const tetrisResetBtn=document.getElementById('tetrisReset');
-const tBox=24;
-const COLS=10;
-const ROWS=16;
-let tetrisTimer=null;
-let tetrisScore=0;
-let board=[];
-let piece=null;
-let px=0,py=0;
-
-const shapes=[
-    [[1,1,1,1]],
-    [[1,1],[1,1]],
-    [[1,1,1],[0,1,0]],
-    [[1,1,1],[1,0,0]],
-    [[1,1,1],[0,0,1]],
-    [[1,1,0],[0,1,1]],
-    [[0,1,1],[1,1,0]]
-];
-const colors=['#06b6d4','#eab308','#a855f7','#f97316','#3b82f6','#22c55e','#ef4444'];
-
-function initBoard(){
-    board=[];
-    for(let y=0;y<ROWS;y++) board.push(new Array(COLS).fill(0));
-}
-function newPiece(){
-    let idx=Math.floor(Math.random()*shapes.length);
-    piece=shapes[idx];
-    px=Math.floor(COLS/2-piece[0].length/2);
-    py=0;
-    return idx;
-}
-function drawTetris(){
-    tCtx.fillStyle= body.classList.contains('light')?"#f1f5f9":"#111111";
-    tCtx.fillRect(0,0,tetrisCanvas.width,tetrisCanvas.height);
-    for(let y=0;y<ROWS;y++){
-        for(let x=0;x<COLS;x++){
-            if(board[y][x]){
-                tCtx.fillStyle=colors[board[y][x]-1];
-                tCtx.fillRect(x*tBox,y*tBox,tBox-1,tBox-1);
-            }
-        }
-    }
-    if(piece){
-        for(let y=0;y<piece.length;y++){
-            for(let x=0;x<piece[y].length;x++){
-                if(piece[y][x]){
-                    tCtx.fillStyle=colors[piece[y][x]-1];
-                    tCtx.fillRect((px+x)*tBox,(py+y)*tBox,tBox-1,tBox-1);
-                }
-            }
-        }
-    }
-}
-function checkCollision(p,x,y){
-    for(let yy=0;yy<p.length;yy++){
-        for(let xx=0;xx<p[yy].length;xx++){
-            if(p[yy][xx]){
-                let nx=x+xx;
-                let ny=y+yy;
-                if(nx<0||nx>=COLS||ny>=ROWS) return true;
-                if(ny>=0 && board[ny][nx]) return true;
-            }
-        }
-    }
-    return false;
-}
-function rotate(p){
-    return p[0].map((_,i)=>p.map(row=>row[i]).reverse());
-}
-function merge(){
-    for(let y=0;y<piece.length;y++){
-        for(let x=0;x<piece[y].length;x++){
-            if(piece[y][x]){
-                board[py+y][px+x]=piece[y][x];
-            }
-        }
-    }
-}
-function clearLine(){
-    let lines=0;
-    for(let y=ROWS-1;y>=0;y--){
-        if(board[y].every(v=>v!==0)){
-            board.splice(y,1);
-            board.unshift(new Array(COLS).fill(0));
-            lines++;y++;
-        }
-    }
-    if(lines>0){
-        tetrisScore+=lines*100;
-        tetrisScoreEl.innerText=tetrisScore;
-    }
-}
-function tetrisStep(){
-    if(!checkCollision(piece,px,py+1)){
-        py++;
-    }else{
-        merge();
-        clearLine();
-        newPiece();
-        if(checkCollision(piece,px,py)){
-            clearInterval(tetrisTimer);
-            alert("俄罗斯方块游戏结束！分数："+tetrisScore);
-        }
-    }
-    drawTetris();
-}
-function tetrisReset(){
-    clearInterval(tetrisTimer);
-    tetrisTimer=null;
-    tetrisScore=0;
-    tetrisScoreEl.innerText=tetrisScore;
-    initBoard();
-    newPiece();
-    drawTetris();
-}
-tetrisStartBtn.onclick=()=>{
-    if(!tetrisTimer) tetrisTimer=setInterval(tetrisStep,450);
-};
-tetrisResetBtn.onclick=tetrisReset;
-initBoard();newPiece();drawTetris();
-
-document.addEventListener('keydown',e=>{
-    const snakePageShow=document.getElementById('snakePage').classList.contains('show');
-    const tetrisPageShow=document.getElementById('tetrisPage').classList.contains('show');
-    if(snakePageShow){
-        if(e.key==="ArrowLeft"&&snakeDir!="RIGHT") snakeNextDir="LEFT";
-        if(e.key==="ArrowRight"&&snakeDir!="LEFT") snakeNextDir="RIGHT";
-        if(e.key==="ArrowUp"&&snakeDir!="DOWN") snakeNextDir="UP";
-        if(e.key==="ArrowDown"&&snakeDir!="UP") snakeNextDir="DOWN";
-    }
-    if(tetrisPageShow && piece){
-        if(e.key==="ArrowLeft"&&!checkCollision(piece,px-1,py)) px--;
-        if(e.key==="ArrowRight"&&!checkCollision(piece,px+1,py)) px++;
-        if(e.key==="ArrowDown"&&!checkCollision(piece,px,py+1)) py++;
-        if(e.key==="ArrowUp"){
-            let rot=rotate(piece);
-            if(!checkCollision(rot,px,py)) piece=rot;
-        }
-        drawTetris();
-    }
-});
-
-function stopAllGame(){
-    clearInterval(snakeGameTimer);snakeGameTimer=null;
-    clearInterval(tetrisTimer);tetrisTimer=null;
-}
-</script>
 </body>
 </html>
