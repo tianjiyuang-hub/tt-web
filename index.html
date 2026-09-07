@@ -2,7 +2,7 @@
 <html lang="zh‑CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ti4nj1.xyz</title>
     <style>
         :root {
@@ -25,6 +25,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            touch‑action: manipulation; /* 关键：禁止双击缩放，保留滚动 */
         }
         body {
             min-height: 100vh;
@@ -106,7 +107,6 @@
             border:2px solid var(--border);
             border-radius:8px;
             background:#111;
-            touch-action:none;
         }
         .light canvas{
             background:#f1f5f9;
@@ -240,7 +240,7 @@ navBtns.forEach(btn=>{
     }
 });
 
-//虚拟方向按键事件
+//虚拟按键改用 touchstart，防止双击放大
 const btnUp=document.querySelectorAll('.btn-up');
 const btnDown=document.querySelectorAll('.btn-down');
 const btnLeft=document.querySelectorAll('.btn-left');
@@ -250,10 +250,31 @@ function fireKey(keyName){
     const evt=new KeyboardEvent('keydown',{key:keyName});
     document.dispatchEvent(evt);
 }
-btnUp.forEach(b=>b.onclick=()=>fireKey("ArrowUp"));
-btnDown.forEach(b=>b.onclick=()=>fireKey("ArrowDown"));
-btnLeft.forEach(b=>b.onclick=()=>fireKey("ArrowLeft"));
-btnRight.forEach(b=>b.onclick=()=>fireKey("ArrowRight"));
+
+btnUp.forEach(b=>{
+    b.addEventListener('touchstart',e=>{
+        e.preventDefault();
+        fireKey("ArrowUp");
+    },{passive:false});
+});
+btnDown.forEach(b=>{
+    b.addEventListener('touchstart',e=>{
+        e.preventDefault();
+        fireKey("ArrowDown");
+    },{passive:false});
+});
+btnLeft.forEach(b=>{
+    b.addEventListener('touchstart',e=>{
+        e.preventDefault();
+        fireKey("ArrowLeft");
+    },{passive:false});
+});
+btnRight.forEach(b=>{
+    b.addEventListener('touchstart',e=>{
+        e.preventDefault();
+        fireKey("ArrowRight");
+    },{passive:false});
+});
 
 // ==========贪吃蛇 ==========
 const snakeCanvas=document.getElementById('snakeCanvas');
